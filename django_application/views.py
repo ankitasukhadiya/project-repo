@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.template import loader
 from .models import Car
 from .forms import CarForm
+from django.core.paginator import Paginator
 
 
 def home(request):
@@ -22,8 +23,18 @@ def carlist(request):
         if data.is_valid():
             data.save()
             return redirect('django_application:thankyou')
-    return render(request , 'carlist.html',{'form':form})        
+    return render(request , 'carlist.html',{'form':form})   
 
+def findcar(request):
+    return render(request,'findcar.html')
+    # data = Car.objects.all()   
+    # paginator = Paginator(data, 5) 
+    # page_number = request.GET.get('page')
+    # data = paginator.get_page(page_number)
+    # context = {
+    #         'data': data,
+    #     }     
+    # return render(request, "findcar.html", context)
 
 
 
