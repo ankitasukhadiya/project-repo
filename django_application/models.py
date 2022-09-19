@@ -31,18 +31,18 @@ class Car(models.Model):
     asking_price = MoneyField(max_digits=10,decimal_places=2,default_currency='USD',
     validators=[MinMoneyValidator(Money(1000,'USD')),MaxMoneyValidator(Money(100000,'USD'))])
     status = models.CharField(max_length=20,choices = car_status,null=True)
-    User = models.ForeignKey('User',on_delete=models.CASCADE)
+    User = models.ForeignKey('User',on_delete=models.CASCADE,null=True)
 
     def __str__(self):
         return self.seller_name
 
 class  BuyCar(models.Model):
-    Car = models.ForeignKey(Car,on_delete=models.CASCADE)   
+    Car = models.ForeignKey(Car,on_delete=models.CASCADE,null=True)   
     buyer_name = models.CharField(max_length=50)
     buyer_number = models.CharField(max_length=10)
     commission = models.FloatField(max_length=20)
     net_amount = models.FloatField(max_length=20) 
-    User = models.ForeignKey('User',on_delete=models.CASCADE)
+    User = models.ForeignKey('User',on_delete=models.CASCADE,null=True)
         
     def _str_(self):
         return self.buyer_name
