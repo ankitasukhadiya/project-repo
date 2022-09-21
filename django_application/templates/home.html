@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
 {% block content %}
-    <a href="{% url 'django_application:carlist'  %}">Car List:</a><br>
-    <a href="{% url 'django_application:findcar' %}">Find Car:</a>   
+    <button><a href="{% url 'django_application:carlist'  %}">List Car:</a></button><br><br> 
+    <button><a href="{% url 'django_application:findcar' %}">Find Car:</a></button><br>   
 {% endblock %}
