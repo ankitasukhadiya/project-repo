@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block content %}  
+<html>
+
+
+<head>
+    <body>
+        <table border="1">
+            <tr>
+                <th>Seller Name</th>
+                <th>Seller Mobile</th>
+                <th>Make</th>
+                <th>Model</th>
+                <th>Year</th>
+                <th>Condition</th>
+                <th>Price</th>
+                <!-- <th>Status</th> -->
+                <th>Available/Sold</th>    
+            </tr>
+            {% for x in cardata %}
+            <tr>
+                <td>{{x.seller_name}}</td>
+                <td>{{x.seller_mobile}}</td>
+                <td>{{x.make}}</td>
+                <td>{{x.model}}</td>
+                <td>{{x.year}}</td>
+                <td>{{x.condition}}</td>
+                <td>{{x.asking_price}}</td>
+                <!-- <td>{{x.status}}</td>     -->
+                <td><button type = "submit" value="buy" name="save"><a href="{% url 'django_application:carstatus' %}">Made available</a></button></td> 
+                
+                  
+            </tr> 
+            
+            {% endfor %}   
+        </table>
+    </body>
+</head>    
+</html>
+
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <body>
+            <h2>List of Cars</h2>
+            <form action = '{% url "django_application:buycardetail"  %}' method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <table border="1">
+                    <tr>    
+                    <th>Make</th>   
+                    <th>Name</th>    
+                    <th>Model</th>
+                    <th>Year</th>
+                    <th>Condition</th>
+                    <th>Price</th></tr>
+                    {% for x in data %}     
+                    <tr>
+                    <td><a href="/django_application/cardetail/{{x.id}}" >{{ x.make }}</a></td>  
+                    <td>{{ x.seller_name }}</td>    
+                    <td>{{ x.model }}</td>
+                    <td>{{ x.year }}</td>
+                    <td>{{ x.condition }}</td>
+                    <td>{{ x.asking_price }}</td></tr>
+                    {% endfor %} 
+                </table><br>        
+            </form>
+        </body>
+    </head>
+</html>
+{% endblock %}

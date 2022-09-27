@@ -22,7 +22,7 @@
                 <td>{{ x.model }}</td>
                 <td>{{ x.year }}</td>
                 <td>{{ x.condition }}</td>
-                <td>{{ x.asking_price }}</td>
+                <td>{{ x.asking_price }}</td></tr>
                 {% endfor %}   
             </table>
             <div class="pagination">
@@ -30,16 +30,15 @@
                     {% if data.has_previous %}
                         <a href="?page=1">&laquo; first</a>
                         <a href="?page={{ data.previous_page_number }}">previous</a>
-                    {% endif %}
-            
+                    {% endif %}            
                     <span class="current">
                         Page {{ data.number }} of {{ data.paginator.num_pages }}.
-                    </span>
-            
+                    </span>            
                     {% if data.has_next %}
                         <a href="?page={{ data.next_page_number }}">next</a>
                         <a href="?page={{ data.paginator.num_pages }}">last &raquo;</a>
                     {% endif %}
+                    
                 </span>
             </div>
         </form>   

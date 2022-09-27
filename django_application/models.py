@@ -26,6 +26,7 @@ class Car(models.Model):
     seller_mobile = models.CharField(max_length=10)
     make = models.CharField(max_length=50)
     model = models.CharField(max_length=50)
+    image = models.ImageField(null=True)
     year = models.DateField()
     condition = models.CharField(max_length=20, choices=condition_choices)
     asking_price = MoneyField(max_digits=10,decimal_places=2,default_currency='USD',
@@ -40,12 +41,23 @@ class  BuyCar(models.Model):
     Car = models.ForeignKey(Car,on_delete=models.CASCADE,null=True)   
     buyer_name = models.CharField(max_length=50)
     buyer_number = models.CharField(max_length=10)
-    commission = models.FloatField(max_length=20)
-    net_amount = models.FloatField(max_length=20) 
+    commission = MoneyField(max_digits=10,decimal_places=2,default_currency='USD',default=0)
+    net_amount = MoneyField(max_digits=10,decimal_places=2,default_currency='USD',default=0) 
     User = models.ForeignKey('User',on_delete=models.CASCADE,null=True)
         
     def _str_(self):
         return self.buyer_name
+
+    @property
+    def commission(self):
+        commission = (self.Car.asking_price * 5) /100  
+        return commission  
+
+    @property
+    def net_amount(self):
+        commission = (self.Car.asking_price * 5) /100       
+        net_amount = (self.Car.asking_price) - commission 
+        return net_amount    
 
 class User(AbstractUser):
     username = None
@@ -56,6 +68,20 @@ class User(AbstractUser):
     REQUIRED_FIELDS =  []
     objects = UserManager()
 
+# @property
+# def commission(self):
+#     commission = self.asking_price * 5 /100  
+#     return commission 
+
+# @property
+# def net_amolunt(self):       
+#     net_amount = self.asking_price - commission 
+#     return net_amount
+
+# class Images(models.Model):
+#     Car = models.ForeignKey('Car',on_delete=models.CASCADE,null=True)
+#     BuyCar = models.ForeignKey('BuyCar',on_delete=models.CASCADE,null=True)
+#     image = models.ImageField()
 
 
 

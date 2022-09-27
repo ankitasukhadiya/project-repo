@@ -10,4 +10,12 @@ urlpatterns = [
     path('carlist/',views.carlist, name='carlist'),
     path('thankyou/', views.thankyou, name='thankyou'),
     path('findcar/',views.findcar, name='findcar'),
+    path('signup/',views.signup, name = 'signup'),
+    path('login/',views.login, name = 'login'),
+    path('logout/',views.logout, name = 'logout'),
+    path('buycardetail/',views.buycardetail, name = 'buycardetail'),
+    path('cardetail/<int:id>',views.cardetail, name = 'cardetail'),
+    path('buycar/<int:id>',views.buycar, name = 'buycar'),
+    path('success/',views.success, name = 'success'),
+    path('carstatus/',views.carstatus, name = 'carstatus'),
 ]

@@ -2,10 +2,24 @@
 <!DOCTYPE html>
 <html>
   <body>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <a href="login" style="font-size: 20px;">Signup </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <a href="login" style="font-size: 20px;">Login </a><br>
+    {% if request.user.is_authenticated %}
+
+      <button><a href="{% url 'django_application:logout'%}" style="font-size: 15px;">Logout </a></button>
+
+    {% else %}
+
+      <button><a href="{% url 'django_application:signup'%}" style="font-size: 15px;">Signup</a></button>
+      <button><a href="{% url 'django_application:login'%}" style="font-size: 15px;">Login </a></button>
+      
+    {% endif %}  
+    {% if request.user.is_authenticated %}
+
+      {{ request.user }}
+
+    {% endif %}
+    <br>
   </body>
-</html>  
+</html>  <br>
 {% block content %}    
 {% endblock %}
  
