@@ -1,7 +1,10 @@
+from distutils.command.upload import upload
 from pyexpat import model
 from tkinter import CASCADE
+from typing_extensions import Self
 from unittest.util import _MAX_LENGTH
 from wsgiref.validate import validator
+import os
 from django.db import models
 from djmoney.models.fields import MoneyField
 from djmoney.models.validators import MaxMoneyValidator,MinMoneyValidator
@@ -10,6 +13,7 @@ from djmoney.money import Money
 from django.contrib.auth.models import AbstractUser
 from .manager import UserManager
 from django.utils.translation import gettext_lazy as _
+from django.core.files.storage import FileSystemStorage
 
 condition_choices = (
     ('poor','poor'),
@@ -21,12 +25,16 @@ car_status = (
     ('available','available'),
     ('sold','sold'),
 )
+
+def get_image_path(instance,filename):
+    return os.path.join('car',str(instance.Car.id),filename)
+
 class Car(models.Model):
     seller_name = models.CharField(max_length=100)
     seller_mobile = models.CharField(max_length=10)
     make = models.CharField(max_length=50)
     model = models.CharField(max_length=50)
-    image = models.ImageField(null=True)
+    image = models.FileField(null=True,upload_to="car/")
     year = models.DateField()
     condition = models.CharField(max_length=20, choices=condition_choices)
     asking_price = MoneyField(max_digits=10,decimal_places=2,default_currency='USD',
@@ -35,7 +43,7 @@ class Car(models.Model):
     User = models.ForeignKey('User',on_delete=models.CASCADE,null=True)
 
     def __str__(self):
-        return self.seller_name
+        return self.seller_name,
 
 class  BuyCar(models.Model):
     Car = models.ForeignKey(Car,on_delete=models.CASCADE,null=True)   
@@ -68,20 +76,17 @@ class User(AbstractUser):
     REQUIRED_FIELDS =  []
     objects = UserManager()
 
-# @property
-# def commission(self):
-#     commission = self.asking_price * 5 /100  
-#     return commission 
+class CarImage(models.Model):
+    Car = models.ForeignKey(Car,on_delete=models.CASCADE,null=True) 
+    image = models.FileField(upload_to=get_image_path)
 
-# @property
-# def net_amolunt(self):       
-#     net_amount = self.asking_price - commission 
-#     return net_amount
 
-# class Images(models.Model):
-#     Car = models.ForeignKey('Car',on_delete=models.CASCADE,null=True)
-#     BuyCar = models.ForeignKey('BuyCar',on_delete=models.CASCADE,null=True)
-#     image = models.ImageField()
+
+    
+
+
+
+
 
 
 

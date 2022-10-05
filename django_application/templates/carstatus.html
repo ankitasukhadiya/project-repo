@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 {% block content %}  
 <html>
-
-
 <head>
     <body>
-        <table border="1">
+        <h4>Available/Sold Car detail </h4>
+        <form action = "{% url 'django_application:carstatus' %}" method="POST">
+        <table border="1" style="text-align: center;">
             <tr>
                 <th>Seller Name</th>
                 <th>Seller Mobile</th>
@@ -14,9 +14,7 @@
                 <th>Year</th>
                 <th>Condition</th>
                 <th>Price</th>
-                <!-- <th>Status</th> -->
-                <th>Available/Sold</th>    
-            </tr>
+                </tr>
             {% for x in cardata %}
             <tr>
                 <td>{{x.seller_name}}</td>
@@ -26,16 +24,20 @@
                 <td>{{x.year}}</td>
                 <td>{{x.condition}}</td>
                 <td>{{x.asking_price}}</td>
-                <!-- <td>{{x.status}}</td>     -->
-                <td><button type = "submit" value="buy" name="save"><a href="{% url 'django_application:carstatus' %}">Made available</a></button></td> 
-                
-                  
-            </tr> 
-            
-            {% endfor %}   
+            </tr>
+            {% endfor %} 
         </table>
+        <table><tr><td>
+        {% if request.user.is_superuser %}
+        <button type="submit" value="buy"><a href="{% url 'django_application:carlist' %}">Add</a></button>
+        {% endif %}
+        </td><td>
+        {% if request.user.is_authenticated %}
+        <button type="submit" value="make available"><a href="{% url 'django_application:carimage' %}">Make available</a></button>
+        </td></tr>
+        {% endif %}            
+       </form>
     </body>
 </head>    
 </html>
-
 {% endblock %}

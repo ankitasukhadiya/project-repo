@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
+{% load static %}
 <!DOCTYPE html>
 <html>
     <head>
@@ -17,8 +18,8 @@
               height: 40px;
             }
         </style>
-        <body><h1>Car Details</title></h1>
-            <form action="{% url 'django_application:cardetail' id %}" method="POST">
+        <body><h3>Car Details</title></h3>
+            <form action="{% url 'django_application:cardetail' id %}" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             <table>    
                 <tr><th>Make  :</th>    
@@ -29,7 +30,7 @@
 
                 <tr><th>Image   : </th>
                 <td><img style="width: 100px; height: 100px;"
-                  src="/media/{{data.image}}"></td></tr>
+                src="{{data.image.url}}"></td></tr>
 
                 <tr><th>Model :</th>
                 <td>{{ data.model }}</td></tr>
@@ -44,7 +45,7 @@
                 <td>{{ data.asking_price}}</td></tr>    
                 
                 <tr><th></th>
-                <td><button><a href="{% url 'django_application:buycar' id %}">BUY</a></button></td></tr>
+                <td><button><a href="{% url 'django_application:buycar' id%}">BUY</a></button></td></tr>
               </table> 
             </form>  
         </body>

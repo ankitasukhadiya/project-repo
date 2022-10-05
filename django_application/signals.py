@@ -18,8 +18,7 @@ def send_mail(sender,instance,created,**kwargs):
         'seller_name':instance.Car.seller_name,'seller_mobile':instance.Car.seller_mobile,'make':instance.Car.make,
         'model':instance.Car.model,'year':instance.Car.year,'condition':instance.Car.condition,
         'asking_price':instance.Car.asking_price,'commission':instance.commission,'net_amount':instance.net_amount})       
-        msg = EmailMultiAlternatives(subject,template,settings.EMAIL_HOST_USER,[settings.EMAIL_HOST_USER])
-       
+        msg = EmailMultiAlternatives(subject,template,settings.EMAIL_HOST_USER,[settings.EMAIL_HOST_USER])   
         msg.content_subtype = 'html'
-        msg.send()
+        # msg.send()
     

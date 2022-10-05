@@ -12,6 +12,7 @@ class CarForm(ModelForm):
         fields = ["seller_name","seller_mobile","make","model","image","year","condition","asking_price"]  
         widgets = {
             'year' : DateInput(),
+            'image': forms.ClearableFileInput(attrs={'multiple': True}),
         } 
 class UserForm(UserCreationForm):
     email = forms.EmailField(label='Email', required=True)

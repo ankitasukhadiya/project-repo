@@ -2,6 +2,7 @@ from django import views
 from django.urls import path
 from django.conf import settings
 from . import views
+from django.conf.urls.static import static
 app_name = 'django_application'
 
 urlpatterns = [
@@ -13,9 +14,11 @@ urlpatterns = [
     path('signup/',views.signup, name = 'signup'),
     path('login/',views.login, name = 'login'),
     path('logout/',views.logout, name = 'logout'),
-    path('buycardetail/',views.buycardetail, name = 'buycardetail'),
+    path('buycardetail/<int:id>',views.buycardetail, name = 'buycardetail'),
     path('cardetail/<int:id>',views.cardetail, name = 'cardetail'),
     path('buycar/<int:id>',views.buycar, name = 'buycar'),
     path('success/',views.success, name = 'success'),
     path('carstatus/',views.carstatus, name = 'carstatus'),
+    path('carimage/',views.carimage, name = 'carimage'),
+
 ]

@@ -1,32 +1,44 @@
 {% extends 'base.html' %}
 {% block content %}
-<!DOCTYPE html>
-<html>
-    <head>
-        <body>
-            <h2>List of Cars</h2>
-            <form action = '{% url "django_application:buycardetail"  %}' method="POST" enctype="multipart/form-data">
+<html lang="en">
+ <head>
+  </head> 
+    <body>
+      <table border="1" style="width: 30%;">
+                <!-- {% for y in data1 %}
+                {% if data.id == y.Car_id %} 
+                <img src="/django_application/media/{{y.image}}">
+                {% endif %}
+                {% endfor %} -->
+
+                {% for y in data1 %}
+                {% if data.id == y.Car_id %} 
+                <img src="{{y.image.url}}">
+                {% endif %}
+                {% endfor %}   
+                 
+            <form action = '{% url "django_application:buycardetail" id %}' method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
-                <table border="1">
+                <table border="1" style="width:60%; text-align: center;" >
                     <tr>    
                     <th>Make</th>   
                     <th>Name</th>    
                     <th>Model</th>
+                    <th>Image</th>
                     <th>Year</th>
                     <th>Condition</th>
                     <th>Price</th></tr>
-                    {% for x in data %}     
                     <tr>
-                    <td><a href="/django_application/cardetail/{{x.id}}" >{{ x.make }}</a></td>  
-                    <td>{{ x.seller_name }}</td>    
-                    <td>{{ x.model }}</td>
-                    <td>{{ x.year }}</td>
-                    <td>{{ x.condition }}</td>
-                    <td>{{ x.asking_price }}</td></tr>
-                    {% endfor %} 
+                    <td><a href="/django_application/cardetail/{{data.id}}" >{{ data.make }}</a></td>  
+                    <td>{{data.seller_name }}</td>    
+                    <td>{{ data.model }}</td>
+                    <td><img style="width: 100px; height: 100px;"
+                        src="{{data.image.url}}"></td>    
+                    <td>{{ data.year }}</td>
+                    <td>{{ data.condition }}</td>
+                    <td>{{ data.asking_price }}</td></tr>    
                 </table><br>        
             </form>
         </body>
-    </head>
 </html>
 {% endblock %}

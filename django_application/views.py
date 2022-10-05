@@ -1,8 +1,10 @@
+from multiprocessing import context
+import pdb
 from django.shortcuts import redirect, render
 from django.http import HttpResponse, JsonResponse
 from django.template import loader
 from django.contrib import messages
-from .models import Car,BuyCar,User
+from .models import Car,BuyCar,User,CarImage
 from .forms import CarForm,UserForm,BuyForm
 from django.core.paginator import Paginator
 from django.db.models import Q
@@ -18,16 +20,10 @@ from django.template.loader import render_to_string
 
 def home(request):
     return render(request,'home.html')
-
 def base(request):
     return render(request,'base.html') 
-
 def thankyou(request):
-    data = Car.objects.all().values()
-    context = {
-        'data' : data,
-    }
-    return render(request,'thankyou.html',context) 
+    return render(request,'thankyou.html') 
 def success(request):
     return render(request,"success.html")
 
@@ -35,9 +31,13 @@ def carlist(request):
     form = CarForm 
     if 'save' in request.POST :
         data = CarForm(request.POST, request.FILES)
+        images = request.FILES.getlist('image')
         print(data,"----")
         if data.is_valid():
-            data.save()
+            Car = data.save()
+            for i in images:
+                CarImage(Car=Car,image=i).save()
+              
             return redirect('django_application:thankyou')
     return render(request,'carlist.html',{'form':form})   
 
@@ -56,7 +56,7 @@ def findcar(request):
 
 def signup(request):
     if request.method == 'POST':
-        form  = UserForm(request.POST)
+        form  = UserForm(request.POST, request.FILES)
         if form.is_valid():    
             form.save()  
             messages.success(request,"successfully Registered !!!")  
@@ -94,11 +94,13 @@ def logout(request):
     return redirect('django_application:base')
 
 
-def buycardetail(request):
-    data = Car.objects.all() 
+def buycardetail(request,id):
+    data = Car.objects.filter(id=id).first()
+    data1 = CarImage.objects.all() 
     context = {
         'data' : data,
         'id' : id,
+        'data1':data1,
     } 
     return render(request,"buycardetail.html",context)  
     
@@ -108,41 +110,53 @@ def cardetail(request,id):
             'data': data,    
             'id': id,
         }    
-        return render(request, "cardetail.html", context)  
-
+        return render(request, "cardetail.html", context)
+          
 def buycar(request,id):
     cardata = Car.objects.get(id=id)
-    print(cardata,"=======")
+  
+    # if cardata.status != 'sold':
     if request.method == 'POST':
-        form = BuyForm(request.POST)
-        if form.is_valid():
-            buyername = form.cleaned_data.get('buyer_name')
-            print(buyername,"----")
-            buyernumber = form.cleaned_data.get('buyer_number')
-            print(buyernumber,"////")   
-            buycarobj = BuyCar(Car=cardata,buyer_name= buyername,buyer_number=buyernumber)
-            buycarobj.save()    
-            return redirect("django_application:success")
-        else:    
-            return render(request,"buycar.html",{'form':form,'cardata':cardata})   
+            form = BuyForm(request.POST,request.FILES)
+            if form.is_valid():
+                buyername = form.cleaned_data.get('buyer_name')
+                print(buyername,"----")
+                buyernumber = form.cleaned_data.get('buyer_number')
+                print(buyernumber,"////")   
+                buycarobj = BuyCar(Car=cardata,buyer_name= buyername,buyer_number=buyernumber)
+                buycarobj.save()    
+                return redirect("django_application:success")
+            else:    
+                return render(request,"buycar.html",{'form':form,'cardata':cardata})   
     cardata.status = 'sold'
     cardata.save()
     form = BuyForm(request.POST)
     return render(request,"buycar.html",{'form':form,'cardata':cardata}) 
 
 def carstatus(request):   
-    
-    cardata = Car.objects.filter(status = 'sold')
-    if cardata is not None:
+   if request.user.is_superuser: 
+        cardata = Car.objects.filter(status = 'sold') 
         context = {
             'cardata': cardata,
-            'id':id,
         }
-        cardata.status = 'available'
-    else:
-        cardata = Car.objects.all()    
-    # cardata.save()        
-    return render(request,'carstatus.html',context)
+   elif request.user.is_authenticated:
+        cardata = Car.objects.exclude(status = 'sold')
+        context = {
+            'cardata': cardata,
+        }
+   return render(request,'carstatus.html',context)
+
+def carimage(request):
+    data = Car.objects.exclude(status='sold')
+    context = {
+        'data':data,
+        'id':id,
+    }
+    return render(request,'carimage.html',context)    
+
+
+ 
+
    
     
             
