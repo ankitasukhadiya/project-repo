@@ -20,5 +20,5 @@ def send_mail(sender,instance,created,**kwargs):
         'asking_price':instance.Car.asking_price,'commission':instance.commission,'net_amount':instance.net_amount})       
         msg = EmailMultiAlternatives(subject,template,settings.EMAIL_HOST_USER,[settings.EMAIL_HOST_USER])   
         msg.content_subtype = 'html'
-        # msg.send()
+        msg.send()
     

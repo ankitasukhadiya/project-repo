@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_application',
     'djmoney',
+    'django_google_maps',
 ]
 
 MIDDLEWARE = [
@@ -128,6 +129,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_ROOT  = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 LOGIN_URL = '/login/'
+GOOGLE_MAPS_API_KEY = os.environ.get('GOOGLE_MAPS_API_KEY')
+# GOOGLE_MAPS_API_KEY = AIzaSyAo2HSHzK8pNW-tg-SH6KdLtSKePwy4-tM
+# GOOGLE_MAPS_API_KEY = AIzaSyDmxedtuxcQiyAG43ka7WKt1AyYGAOxl3I
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST_USER = 'ankitagadhiya36@gmail.com'
