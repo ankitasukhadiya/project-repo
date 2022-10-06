@@ -134,17 +134,19 @@ def buycar(request,id):
     return render(request,"buycar.html",{'form':form,'cardata':cardata}) 
 
 def carstatus(request):   
-   if request.user.is_superuser: 
+    context = {}
+    if request.user.is_superuser: 
         cardata = Car.objects.filter(status = 'sold') 
         context = {
             'cardata': cardata,
         }
-   elif request.user.is_authenticated:
+    elif request.user.is_authenticated:
         cardata = Car.objects.exclude(status = 'sold')
         context = {
             'cardata': cardata,
-        }
-   return render(request,'carstatus.html',context)
+        } 
+    
+    return render(request,'carstatus.html',context)
 
 def carimage(request):
     data = Car.objects.exclude(status='sold')
